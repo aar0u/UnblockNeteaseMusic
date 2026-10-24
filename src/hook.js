@@ -300,6 +300,8 @@ hook.request.before = (ctx) => {
 			req.url = url.href;
 			req.headers['host'] = url.hostname;
 			req.headers['cookie'] = null;
+			req.headers['user-agent'] =
+				'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 			ctx.package = { id };
 			ctx.decision = 'proxy';
 			// if (url.href.includes('google'))
