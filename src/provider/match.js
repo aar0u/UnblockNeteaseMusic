@@ -145,6 +145,8 @@ async function check(url) {
 	const header = {
 		range: 'bytes=0-8191',
 		'accept-encoding': 'identity',
+		'user-agent':
+			'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
 	};
 
 	// Set the "Referer" header.
@@ -152,15 +154,34 @@ async function check(url) {
 		if (isHost(urlPattern)) header.referer = refererValue;
 	});
 
-	const response = await request('GET', url, header);
+	let response;
+	try {
+		response = await request('GET', url, header);
+	} catch (e) {
+		if (isHost('googlevideo.com') || isHost('youtube.com')) {
+			song.url = url;
+			song.size = 5000000;
+			song.br = 128000;
+			return song;
+		}
+		throw e;
+	}
+
 	const {
 		/** @type {Record<string, string>} */
 		headers,
 	} = response;
 
 	// Check if this request success.
-	if (!isHttpResponseOk(response.statusCode))
+	if (!isHttpResponseOk(response.statusCode)) {
+		if (isHost('googlevideo.com') || isHost('youtube.com')) {
+			song.url = url;
+			song.size = 5000000;
+			song.br = 128000;
+			return song;
+		}
 		throw new RequestFailed(url, response.statusCode);
+	}
 
 	// Set the URL of this song.
 	song.url = response.url.href;
