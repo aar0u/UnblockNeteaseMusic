@@ -21,8 +21,10 @@ const dlArguments = (query) => {
 		'-f',
 		'ba/b',
 		'--no-warnings',
+		'--no-playlist',
+		'--skip-download',
 		'--extractor-args',
-		'youtube:player_client=android,ios,web',
+		'youtube:player_client=web',
 		'--dump-json',
 	];
 	if (fs.existsSync('/etc/yt-dlp-cookies.txt')) {
