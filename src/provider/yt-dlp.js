@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { getManagedCacheStorage } = require('../cache');
 const { logScope } = require('../logger');
 const { spawnStdout } = require('../spawn');
@@ -15,15 +16,21 @@ const YtDlpNotInstalled = require('../exceptions/YtDlpNotInstalled');
  *
  * @param {string} query
  */
-const dlArguments = (query) => [
-	'-f',
-	'140/bestaudio/best',
-	'--no-warnings',
-	'--extractor-args',
-	'youtube:player_client=android,ios,web',
-	'--dump-json',
-	query,
-];
+const dlArguments = (query) => {
+	const args = [
+		'-f',
+		'ba/b',
+		'--no-warnings',
+		'--extractor-args',
+		'youtube:player_client=android,ios,web',
+		'--dump-json',
+	];
+	if (fs.existsSync('/etc/yt-dlp-cookies.txt')) {
+		args.push('--cookies', '/etc/yt-dlp-cookies.txt');
+	}
+	args.push(query);
+	return args;
+};
 /** @param {string} keyword */
 const byKeyword = (keyword) => `ytsearch1:${keyword}`;
 const logger = logScope('provider/yt-dlp');

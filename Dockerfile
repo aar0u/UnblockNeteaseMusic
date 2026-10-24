@@ -1,7 +1,7 @@
 FROM node:lts-alpine
 
 RUN set -ex && mkdir /app
-RUN apk add --no-cache python3 youtube-dl \
+RUN apk add --no-cache python3 ffmpeg \
     && wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp \
     && chmod a+rx /usr/local/bin/yt-dlp \
     && printf '--cache-dir /var/cache/yt-dlp\n--js-runtimes node:/usr/local/bin/node\n--extractor-args youtube:player_client=android,ios,web\n' | tee /etc/yt-dlp.conf
