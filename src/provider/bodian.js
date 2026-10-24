@@ -64,7 +64,8 @@ const search = (info) => {
 			const list = jsonBody.content[1].musicpage.abslist.map(format);
 			const matched = select(list, info);
 			return matched ? matched.id : Promise.reject();
-		});
+		})
+		.catch(() => Promise.reject());
 };
 
 const sendAdFreeRequest = () => {

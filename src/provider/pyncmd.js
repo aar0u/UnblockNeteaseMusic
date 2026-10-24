@@ -23,7 +23,8 @@ const track = (info) => {
 				return Promise.reject();
 
 			return jsonBody.br > 0 ? jsonBody.url : Promise.reject();
-		});
+		})
+		.catch(() => Promise.reject());
 };
 
 const cs = getManagedCacheStorage('provider/pyncmd');

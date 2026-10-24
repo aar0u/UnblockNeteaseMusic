@@ -24,10 +24,13 @@ const search = (info) => {
 	return request('GET', url)
 		.then((response) => response.json())
 		.then((jsonBody) => {
-			const list = jsonBody.data.result.map(format);
+			const result = jsonBody?.data?.result;
+			if (!Array.isArray(result)) return Promise.reject();
+			const list = result.map(format);
 			const matched = select(list, info);
 			return matched ? matched.id : Promise.reject();
-		});
+		})
+		.catch(() => Promise.reject());
 };
 
 const track = (id) => {
